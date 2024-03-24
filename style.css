@@ -1,0 +1,64 @@
+#myVideo {
+  position: fixed;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -10;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+}
+
+h2 {
+  font-family: "Libre Baskerville", serif;
+  font-size: 40px;
+  color: darkred;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+#btn {
+  background-color: bisque;
+  border-radius: 20px;
+  border: 1px solid darkred;
+  padding: 15px;
+  font-size: 20px;
+  width: 30%;
+  cursor: pointer;
+}
+
+a{
+  text-decoration: none;
+  font-family: "Libre Baskerville", serif;
+  color: darkred;
+}
+
+#btn:hover {
+  background: linear-gradient(to right, #ebb88f, #e79654);
+}
+
+@media all and (max-width: 800px) {
+  h2 {
+    font-size: 30px;
+  }
+  #btn {
+    font-size: 14px;
+  }
+}
+
+@media all and (max-width: 500px) {
+  h2 {
+    font-size: 25px;
+  }
+  #btn {
+    font-size: 12px;
+  }
+}

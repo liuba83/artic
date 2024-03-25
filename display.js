@@ -12,8 +12,8 @@ function enterHotKey(e) {
   }
 }
 
+//Show alert while validating
 function displayAlert(titleAlert) {
-    //function shows alert
   Swal.fire({
     title: titleAlert,
     width: 600,
@@ -22,38 +22,41 @@ function displayAlert(titleAlert) {
   });
 }
 
+//Make an api call to artic, convert received response into json format and call displayRresult() function
 async function getArtworks() {
-  //function makes an api call to artic, converts received response into json format and operates displayRresult() function
   pageNumber++;
 
   if (inputField.value.length === 0) {
     displayAlert("Enter artist name, title or another key word");
     return false;
   } else {
-    const rowRequest = await fetch(
-      `https://api.artic.edu/api/v1/artworks/search?&q=${input.value}&fields=id,title,artist_display,image_id&page=${pageNumber}&limit=1`
+    const rowResponse = await fetch(
+      `https://api.artic.edu/api/v1/artworks/search?&q=${inputField.value}&fields=id,title,artist_display,image_id&page=${pageNumber}&limit=1`
     );
-    const jsonRequest = await rowRequest.json();
-    displayResult(jsonRequest);
-    if (pageNumber === jsonRequest.pagination.total_pages) {
+    const jsonResponse = await rowResponse.json();
+    displayResult(jsonResponse);
+
+    if (pageNumber === jsonResponse.pagination.total_pages) {
         showBtn.disabled = true;
         displayAlert("This was the last page. Start over with new search!")
     }
   }
 }
 
+//Fetch data from response and display in HTML
 function displayResult(request) {
-  //function retrieves data from response and displays on UI
   let image = document.querySelector("#image");
   let artist = document.querySelector("#artist");
   let title = document.querySelector("#title");
 
+  //Show alert if request is invalid
   if (request.pagination.total === 0) {
     displayAlert("Try to search by another criteria");
     return false;
   } else {
     image.style.display = "block";
 
+    //Show generic image when no image is available in response
     if (request.data[0].image_id === null) {
       image.setAttribute("src", "notAvailable.jpeg");
       return false;

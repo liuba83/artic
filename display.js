@@ -1,10 +1,9 @@
 const showBtn = document.querySelector("#showArtBtn");
-showBtn.addEventListener("click", getArtworks);
-
 const inputField = document.querySelector("#input");
-inputField.addEventListener("keypress", enterHotKey);
-
 let pageNumber = 0;
+
+showBtn.addEventListener("click", getArtworks);
+inputField.addEventListener("keypress", enterHotKey);
 
 function enterHotKey(e) {
   if (e.keyCode === 13) {
@@ -30,20 +29,24 @@ async function getArtworks() {
     displayAlert("Enter artist name, title or another key word");
     return false;
   } else {
-    const rowResponse = await fetch(
-      `https://api.artic.edu/api/v1/artworks/search?&q=${inputField.value}&fields=id,title,artist_display,image_id&page=${pageNumber}&limit=1`
-    );
-    const jsonResponse = await rowResponse.json();
-    displayResult(jsonResponse);
+    try {
+      const rowResponse = await fetch(
+        `https://api.artic.edu/api/v1/artworks/search?&q=${inputField.value}&fields=id,title,artist_display,image_id&page=${pageNumber}&limit=1`
+      );
+      const jsonResponse = await rowResponse.json();
+      displayResult(jsonResponse);
 
-    if (pageNumber === jsonResponse.pagination.total_pages) {
+      if (pageNumber === jsonResponse.pagination.total_pages) {
         showBtn.disabled = true;
-        displayAlert("This was the last page. Start over with new search!")
+        displayAlert("This was the last page. Start over with new search!");
+      }
+    } catch (err) {
+      console.error(err);
     }
   }
 }
 
-//Fetch data from response and display in HTML
+//Retrieve data from response and display in HTML
 function displayResult(request) {
   let image = document.querySelector("#image");
   let artist = document.querySelector("#artist");
@@ -70,4 +73,3 @@ function displayResult(request) {
     title.textContent = `${request.data[0].title}`;
   }
 }
-
